@@ -9,7 +9,10 @@ TEXT = "The 3am page went to my agent, not to me; by morning the incident was a 
 
 def main() -> None:
     assert 1 <= len(TEXT) <= 280
-    output_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
+    output_dir_name = os.environ.get("MAKEFUN_OUTPUT_DIR")
+    if output_dir_name is None:
+        output_dir_name = os.environ.get("OUTPUT_DIR", "/output")
+    output_dir = Path(output_dir_name)
     output_dir.mkdir(parents=True, exist_ok=True)
     (output_dir / "entry.txt").write_bytes(TEXT.encode("utf-8"))
     print(len(TEXT), file=sys.stderr)
